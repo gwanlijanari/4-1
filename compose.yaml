@@ -1,0 +1,31 @@
+name: student-app
+
+services:
+  api:
+    build: .
+    environment:
+      ROLE: api
+      PORT: 8000
+      DATA_DIR: /data
+    volumes:
+      - api_data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
+  web:
+    build: .
+    environment:
+      ROLE: web
+      PORT: 8000
+      API_URL: http://api:8000
+    ports:
+      - "8080:8000"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  api_data:
