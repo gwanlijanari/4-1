@@ -48,5 +48,13 @@ services:
       api:
         condition: service_healthy
 
+  ansible:
+    image: alpine/ansible:latest
+    working_dir: /ansible
+    volumes:
+      - ./ansible:/ansible
+      - api_data:/data
+    entrypoint: ansible-playbook
+
 volumes:
   api_data:

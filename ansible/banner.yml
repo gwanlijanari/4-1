@@ -1,0 +1,13 @@
+- name: Configure workshop banner
+  hosts: localhost
+  connection: local
+  vars:
+    workshop_message: "ответ2"
+  tasks:
+    - name: Create banner file
+      ansible.builtin.copy:
+        dest: /data/banner.txt
+        content: "{{ workshop_message }}"
+        mode: '0644'
+        owner: 10001
+        group: 10001
